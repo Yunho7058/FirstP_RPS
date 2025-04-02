@@ -1,6 +1,6 @@
 import './App.css';
 import Box from './component/Box';
-import { useState } from 'react';
+import { useEffect, useState } from 'react';
 /*
 박스 2개 생성
 1. 나,컴퓨터
@@ -30,20 +30,74 @@ const choice = {
 
 function App() {
   const [useSelect, setUseSelect] = useState(null);
+  const [computerSelect, setComputerSelect] = useState(null);
+  const [result, setResult] = useState('');
+  const [comResult, setComResult] = useState('');
+  const [count, setCount] = useState(0);
+  const [bestScore, setBestScore] = useState(0);
   const play = (userChoice) => {
-    setUseSelect(choice[userChoice]);
+    const user = choice[userChoice];
+    const computer = randomChoice();
+    setUseSelect(user);
+    setComputerSelect(computer);
+    setResult(judgement(user, computer));
+    // 잘못된 코드 react state 값이 담기전에 랜더링되어 오류 발생
+    // setUseSelect(choice[userChoice]);
+    // let computerChoice = randomChoice();
+    // setComputerSelect(computerChoice);
+    // setResult(judgement(choice[userChoice], computerSelect));
   };
+  const randomChoice = () => {
+    let itemArray = Object.keys(choice);
+    let randomItem = Math.floor(Math.random() * itemArray.length);
+    let result = itemArray[randomItem];
+    return choice[result];
+  };
+  const judgement = (user, com) => {
+    //console.log(user, com);
+    let userResult;
+    if (user.name === com.name) {
+      userResult = 'TIE';
+    } else if (user.name === '주먹') {
+      userResult = com.name === '가위' ? 'WIN' : 'LOSE';
+    } else if (user.name === '가위') {
+      userResult = com.name === '보' ? 'WIN' : 'LOSE';
+    } else if (user.name === '보') {
+      userResult = com.name === '주먹' ? 'WIN' : 'LOSE';
+    }
+    if (userResult === 'WIN') {
+      let newCont = count + 1;
+      setCount(newCont);
+      if (bestScore <= newCont) {
+        setBestScore(newCont);
+      }
+    } else {
+      setCount(0);
+    }
+    return userResult;
+  };
+  useEffect(() => {
+    if (result !== '') {
+      let comResult = 'TIE';
+      if (result !== 'TIE') {
+        comResult = result === 'WIN' ? 'LOSE' : 'WIN';
+      }
+      setComResult(comResult);
+    }
+  }, [result]);
   return (
     <div className="main">
       <div className="box-main">
-        <Box title="You" item={useSelect} />
-        {/* <Box title="Computer" /> */}
+        <Box title="You" item={useSelect} result={result} />
+        <Box title="Computer" item={computerSelect} result={comResult} />
       </div>
       <div className="btn-box">
         <button onClick={() => play('scissors')}>가위</button>
         <button onClick={() => play('rock')}>주먹</button>
         <button onClick={() => play('paper')}>보</button>
       </div>
+      <div>연속승리횟수 : {count}</div>
+      <div>최대 연속승리횟수 : {bestScore}</div>
     </div>
   );
 }

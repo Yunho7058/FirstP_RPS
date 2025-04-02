@@ -2,7 +2,34 @@
   width: 500px;
   height: 500px;
   display: column;
-  border: solid 1px green;
+  border: solid 3px rgb(2, 2, 2);
+  border-radius: 25px;
+  padding: 10px;
+  box-shadow: 3px 3px 5px rgba(0, 0, 0, 0.5);
+}
+.WIN {
+  width: 500px;
+  height: 500px;
+  display: column;
+  border: solid 3px green;
+  border-radius: 25px;
+  padding: 10px;
+  box-shadow: 3px 3px 5px rgba(0, 0, 0, 0.5);
+}
+.LOSE {
+  width: 500px;
+  height: 500px;
+  display: column;
+  border: solid 3px red;
+  border-radius: 25px;
+  padding: 10px;
+  box-shadow: 3px 3px 5px rgba(0, 0, 0, 0.5);
+}
+.TIE {
+  width: 500px;
+  height: 500px;
+  display: column;
+  border: solid 3px yellow;
   border-radius: 25px;
   padding: 10px;
   box-shadow: 3px 3px 5px rgba(0, 0, 0, 0.5);
@@ -24,7 +51,11 @@ h2 {
 }
 
 .box-main {
+  width: 100%;
   padding: 30px;
+  display: flex;
+  flex-direction: row;
+  justify-content: space-around;
 }
 .btn-box {
   width: 300px;
